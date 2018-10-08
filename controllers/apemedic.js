@@ -8,7 +8,7 @@ const apimedic = axios.create({
 })
 
 // get all symptoms
-const getSymptoms = (req, res) => {
+const getSymptoms = req => {
   const {
     app: { locals }
   } = req
@@ -20,17 +20,22 @@ const getSymptoms = (req, res) => {
 }
 
 // get diagnosis according to the recieved symptoms
-const getDiagnosis = (req, res) => {
+const getDiagnosis = req => {
   const {
     body: { symptoms },
     app: { locals }
   } = req
-
+  console.log(symptoms)
   return apimedic('/diagnosis', {
     params: {
-      token: locals.key
+      token: locals.key,
+      symptoms: JSON.stringify(symptoms),
+      gender: 'male',
+      year_of_birth: 1997
     }
-  }).then(res => res.data)
+  })
+    .then(res => res.data)
+    .catch(err => console.log(err))
 }
 
 module.exports = {

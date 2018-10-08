@@ -16,9 +16,25 @@
   </v-container>
 </template>
 
+<script>
+import axios from 'axios'
+export default {
+  data() {
+    return {
+      symptoms: []
+    }
+  },
+  mounted() {
+    console.log('mounted')
+    axios('/api/symptoms').then(res => console.log(res.data))
+  }
+}
+</script>
+
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 ul {

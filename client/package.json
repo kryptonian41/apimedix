@@ -1,6 +1,7 @@
 {
   "name": "apimedic",
   "version": "1.0.0",
+  "proxy": "http://localhost:4000",
   "description": "Innovaccer Assignment Project",
   "author": "Apoorv Agarwal",
   "private": true,
@@ -12,6 +13,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuetify": "^1.0.0"

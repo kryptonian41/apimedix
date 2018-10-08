@@ -27,6 +27,8 @@
     <v-toolbar
       app
       :clipped-left="clipped"
+      dark
+      color="error"
     >
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-btn icon @click.stop="miniVariant = !miniVariant">
@@ -71,19 +73,21 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       clipped: false,
       drawer: true,
       fixed: false,
-      items: [{
-        icon: 'bubble_chart',
-        title: 'Inspire'
-      }],
+      items: [
+        {
+          icon: 'bubble_chart',
+          title: 'Inspire'
+        }
+      ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js'
+      title: 'Medix'
     }
   },
   name: 'App'
