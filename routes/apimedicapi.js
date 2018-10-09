@@ -8,7 +8,7 @@ router.get('/symptoms', (req, res) => {
     .then(data => {
       res.json(data)
     })
-    .catch(err => res.send(err))
+    .catch(err => res.send('err'))
 })
 router.post('/diagnosis', (req, res) => {
   apiController.getDiagnosis(req).then(data => {
