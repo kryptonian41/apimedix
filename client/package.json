@@ -1,7 +1,6 @@
 {
   "name": "apimedic",
   "version": "1.0.0",
-  "proxy": "http://localhost:4000",
   "description": "Innovaccer Assignment Project",
   "author": "Apoorv Agarwal",
   "private": true,
