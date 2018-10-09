@@ -8,7 +8,7 @@
             How are you feeling ?
           </div>
         </v-card-title>
-        <v-form>
+        <v-form @submit.prevent>
           <v-container>
             <v-layout wrap>
               <v-flex xs12>
