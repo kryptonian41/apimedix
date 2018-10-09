@@ -6,7 +6,6 @@ const CryptoJS = require('crypto-js')
 const router = express.Router()
 const axios = require('axios')
 const mongoose = require('mongoose')
-const { getSymptoms } = require('./controllers/apemedic')
 
 // note: Establishing connection with the Database
 mongoose.connect(

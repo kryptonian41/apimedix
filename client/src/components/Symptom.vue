@@ -67,6 +67,7 @@
           >
             Diagnose
           </v-btn>
+          <v-btn color="success" @click="goToMaps()">See Nearby Doctors</v-btn>
         </v-card-actions>
        </v-card>
     </v-flex>
@@ -85,6 +86,9 @@ export default {
     }
   },
   methods: {
+    goToMaps() {
+      this.$router.push('/docs')
+    },
     remove(item) {
       const index = this.selectedSym.indexOf(item.ID)
       if (index >= 0) this.selectedSym.splice(index, 1)
@@ -106,6 +110,7 @@ export default {
   },
   mounted() {
     var self = this
+    // todo: show a toast notification until the symptoms are being loaded from the servers
     axios('/api/symptoms').then(res => (self.symptoms = res.data))
   }
 }
