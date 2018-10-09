@@ -22,7 +22,9 @@ const getSymptoms = req => {
     params: {
       token: locals.key
     }
-  }).then(res => res.data)
+  })
+    .then(res => res.data)
+    .catch(err => err)
 }
 
 // get diagnosis according to the recieved symptoms
