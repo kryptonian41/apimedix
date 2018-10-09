@@ -4,7 +4,7 @@ This is a assignment project for **Innovaccer's Hackercamp 2019**.
 
 ## Demo
 
-You can view the live example [here](https://www.apimedix.herokuapp.com).
+You can view the live example [here](https://apimedix.herokuapp.com).
 
 ## Tech Stack Used
 
