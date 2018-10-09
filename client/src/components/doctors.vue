@@ -1,9 +1,19 @@
 <template>
-  <div>
-    <h1>blah blah</h1>
-    <div ref="map" id="map"></div>
-    <v-btn color="success" @click="searchNearbyDocs">Search</v-btn>
-  </div>
+  <v-container>
+    <v-layout row wrap justify-center>
+      <v-flex xs12 lg10>
+        <v-card>
+      <v-card-title primary-title class="headline">
+        Nearby Health Care Centers
+      </v-card-title>
+      <div ref="map" id="map"></div>
+      <v-card-actions class="pa-3">
+        <v-btn color="success" @click="searchNearbyDocs">Search</v-btn>
+      </v-card-actions>
+    </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -70,7 +80,7 @@ export default {
 <style scoped>
 #map {
   margin: 0 auto;
-  width: 400px;
+  width: 100%;
   height: 400px;
 }
 </style>

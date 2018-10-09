@@ -3,7 +3,6 @@ const app = express()
 const bodyParser = require('body-parser')
 const config = require('./config')
 const CryptoJS = require('crypto-js')
-const router = express.Router()
 const axios = require('axios')
 const mongoose = require('mongoose')
 
@@ -12,15 +11,15 @@ mongoose.connect(
   config.keys.mongoose_url,
   { useNewUrlParser: true }
 )
-require('./database/diseaseInfo')
 mongoose.Promise = Promise
+require('./schema/diseaseInfo')
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use('/api', require('./routes/apimedicapi'))
 
 // just for developement purposes
-if (!process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/dist'))
   const path = require('path')
   app.get('*', (req, res) => {

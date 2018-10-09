@@ -1,5 +1,11 @@
 const axios = require('axios')
+const cheerio = require('cheerio')
+
 const hostUrl = 'https://sandbox-healthservice.priaid.ch'
+// host website for colleecting data on different diseases
+const scrapeHost = 'https://medlineplus.gov'
+const scrapeSearchHost =
+  'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=medlineplus&v%3Asources=medlineplus-bundle&query='
 const apimedic = axios.create({
   baseURL: hostUrl,
   params: {
@@ -25,7 +31,6 @@ const getDiagnosis = req => {
     body: { symptoms },
     app: { locals }
   } = req
-  console.log(symptoms)
   return apimedic('/diagnosis', {
     params: {
       token: locals.key,
@@ -36,6 +41,10 @@ const getDiagnosis = req => {
   })
     .then(res => res.data)
     .catch(err => console.log(err))
+}
+
+const scrapeDiseaseData = () => {
+  // todo: implement data scrapping
 }
 
 module.exports = {

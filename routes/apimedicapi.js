@@ -9,7 +9,6 @@ router.get('/symptoms', (req, res) => {
 })
 router.post('/diagnosis', (req, res) => {
   apiController.getDiagnosis(req).then(data => {
-    console.log(data)
     res.send(data)
   })
 })
