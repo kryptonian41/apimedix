@@ -42,7 +42,7 @@ const getDiagnosis = req => {
     }
   })
     .then(res => res.data)
-    .catch(err => console.log(err))
+    .catch(err => err)
 }
 
 const scrapeDiseaseData = () => {
