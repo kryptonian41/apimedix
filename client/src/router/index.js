@@ -15,8 +15,10 @@ export default new Router({
       component: Symptom
     },
     {
-      path: '/disease/:id',
-      component: Disease
+      path: '/disease/:data',
+      component: Disease,
+      props: true,
+      name: 'disease'
     },
     {
       path: '/docs',

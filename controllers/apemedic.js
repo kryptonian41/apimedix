@@ -1,5 +1,7 @@
 const axios = require('axios')
 const cheerio = require('cheerio')
+const mongoose = require('mongoose')
+const Disease = mongoose.model('diseases')
 
 const hostUrl = 'https://sandbox-healthservice.priaid.ch'
 // host website for colleecting data on different diseases
@@ -49,7 +51,39 @@ const scrapeDiseaseData = () => {
   // todo: implement data scrapping
 }
 
+const getDiseaseData = req => {
+  const {
+    params: { id },
+    app: { locals }
+  } = req
+
+  return Disease.findOne({ id }).then(res => {
+    if (res) {
+      return res
+    }
+    return apimedic(`/issues/${id}/info`, {
+      params: {
+        token: locals.key,
+        issue_id: id
+      }
+    })
+      .then(async ({ data }) => {
+        const artdata = {
+          title: data.Name,
+          id,
+          medicalProcedure: data.TreatmentDescription,
+          description: data.Description
+        }
+        const disease = new Disease(artdata)
+        await disease.save()
+        return artdata
+      })
+      .catch(err => console.log(err))
+  })
+}
+
 module.exports = {
   getSymptoms,
-  getDiagnosis
+  getDiagnosis,
+  getDiseaseData
 }

@@ -8,7 +8,8 @@ const diseaseSchema = new Schema({
   selfCare: String,
   medications: String,
   medicalProcedure: String,
-  specialists: String
+  specialists: String,
+  description: String
 })
 
 mongoose.model('diseases', diseaseSchema)

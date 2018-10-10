@@ -16,8 +16,8 @@ router.post('/diagnosis', (req, res) => {
   })
 })
 
-router.get('/test', (req, res) => {
-  res.send('success')
+router.get('/disease/:id', (req, res) => {
+  apiController.getDiseaseData(req).then(data => res.send(data))
 })
 
 module.exports = router

@@ -12,7 +12,6 @@
           <v-container>
             <v-layout wrap>
               <v-flex xs12>
-
                 <v-autocomplete
                   v-model="selectedSym"
                   :disabled="diagnosing"
@@ -91,7 +90,7 @@
                 <v-card-text class="grey lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</v-card-text>
                 <v-card-actions class="pa-3">
                   <v-spacer></v-spacer>
-                  <v-btn color="success">Read More</v-btn>
+                  <v-btn color="success" @click="goToDisease(item)">Read More</v-btn>
                 </v-card-actions>
               </v-card>
             </v-expansion-panel-content>
@@ -167,6 +166,13 @@ export default {
         .catch(() => {
           self.diagnosing = false
         })
+    },
+    goToDisease(item) {
+      console.log(item)
+      this.$router.push({
+        name: 'disease',
+        params: { data: { id: item.Issue.ID, title: item.Issue.Name } }
+      })
     }
   },
   computed: {
@@ -175,13 +181,15 @@ export default {
     }
   },
   mounted() {
-    this.loadingSymptoms = true
-    var self = this
-    // todo: show a toast notification until the symptoms are being loaded from the servers
-    axios('/api/symptoms').then(res => {
-      self.loadingSymptoms = false
-      self.symptoms = res.data
-    })
+    setTimeout(() => {
+      this.loadingSymptoms = true
+      var self = this
+      // todo: show a toast notification until the symptoms are being loaded from the servers
+      axios('/api/symptoms').then(res => {
+        self.loadingSymptoms = false
+        self.symptoms = res.data
+      })
+    }, 300)
   }
 }
 </script>

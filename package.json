@@ -11,7 +11,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --inspect index.js",
     "start": "node index.js",
-    "heroku-postbuild": "npm install --prefix client"
+    "heroku-postbuild": "npm install --prefix client",
+    "deploy": "npm run build --prefix client && git add . && git commit -m 'built app for prod' && git push heroku master"
   },
   "keywords": [],
   "author": "",
