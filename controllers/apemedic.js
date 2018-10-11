@@ -109,7 +109,7 @@ const getDiagnosis = req => {
     .catch(err => err)
 }
 
-// Attempt to scrape data from the web (failed for now)
+// Attempt to scrape data from the web (failed for now, could not find a consistent source for medical data)
 /**
  *
  * @param {Disease Name} key
