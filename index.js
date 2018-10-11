@@ -1,11 +1,11 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-const config = require('./config')
 const CryptoJS = require('crypto-js')
 const axios = require('axios')
 const mongoose = require('mongoose')
 const path = require('path')
+const config = require('./config')
 
 // note: Establishing connection with the Database
 mongoose.connect(
@@ -13,11 +13,16 @@ mongoose.connect(
   { useNewUrlParser: true }
 )
 mongoose.Promise = Promise
+
+// DB Model Schemas
 require('./schema/diseaseInfo')
 
+// Middlewares
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-app.use('/api', require('./routes/apimedicapi'))
+
+// Routing Configuration
+app.use('/api', require('./routes/apiRoutes'))
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/dist'))
@@ -26,8 +31,9 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
+// PORT configuration
 app.listen(config.PORT, function() {
-  console.log('Server started at ', config.PORT)
+  console.log('Server started at', config.PORT)
   console.info('Getting and setting the auth token')
   // getting the auth token
   const {

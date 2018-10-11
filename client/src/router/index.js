@@ -21,7 +21,7 @@ export default new Router({
       name: 'disease'
     },
     {
-      path: '/docs',
+      path: '/mapdocs',
       component: DocMap
     }
   ]

@@ -9,11 +9,12 @@
       app
     >
       <v-list>
-        <router-link to="/docs" tag="div">
+        <router-link to="/mapdocs" tag="div">
           <v-list-tile
             value="true"
             v-for="(item, i) in items"
             :key="i"
+            style="cursor: pointer;"
           >
             <v-list-tile-action>
               <v-icon v-html="item.icon"></v-icon>

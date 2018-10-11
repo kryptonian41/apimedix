@@ -66,7 +66,7 @@
           >
             Diagnose
           </v-btn>
-          <v-btn color="success" to="/docs">See Nearby Doctors</v-btn>
+          <v-btn color="success" to="/mapdocs">See Nearby Doctors</v-btn>
         </v-card-actions>
        </v-card>
     </v-flex>
@@ -142,10 +142,12 @@ export default {
     }
   },
   methods: {
+    // remove a symptom from the selected symptom
     remove(item) {
       const index = this.selectedSym.indexOf(item.ID)
       if (index >= 0) this.selectedSym.splice(index, 1)
     },
+    // send symptoms to the server to fetch diagnosis details
     diagnose() {
       this.result = []
       symptomStore.result = []
@@ -170,6 +172,7 @@ export default {
           self.diagnosing = false
         })
     },
+    // Get more information about a particular disease
     goToDisease(item) {
       console.log(item)
       this.$router.push({
@@ -179,11 +182,13 @@ export default {
     }
   },
   computed: {
+    // variables which determines whether, there are results to show or not
     resultPop() {
       return this.result.length > 0 ? true : false
     }
   },
   created() {
+    // if our symptom store has the previously selected then get all the data from the store, preventing uneccessary api calls
     if (!symptomStore.noSymptoms) {
       this.symptoms = symptomStore.symptoms
       this.result = symptomStore.result

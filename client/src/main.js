@@ -3,7 +3,7 @@ import App from './App'
 import router from './router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
-
+/* eslint-disable no-new */
 Vue.use(Vuetify, {
   theme: {
     primary: '#2196F3',
@@ -44,7 +44,7 @@ export const symptomStore = new Vue({
   }
 })
 
-/* eslint-disable no-new */
+// Root vue instance
 new Vue({
   el: '#app',
   router,

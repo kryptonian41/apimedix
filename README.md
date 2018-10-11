@@ -2,9 +2,17 @@
 
 This is a assignment project for **Innovaccer's Hackercamp 2019**.
 
+**Overview** - The web app is served by a backend server coded using Node.js and the frontend side of the app in implemented using Vue.js. The web app has been hosted on Heroku.
+
 ## Demo
 
 You can view the live example [here](https://apimedix.herokuapp.com).
+
+## Folder Structure
+
+**Server** - The root folder (except the client folder) contains the files for our Node.js server.
+
+**Client** - The client folder all the files for our Vue.js SPA.
 
 ## Tech Stack Used
 

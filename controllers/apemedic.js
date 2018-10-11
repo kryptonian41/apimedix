@@ -7,9 +7,10 @@ const puppeteer = require('puppeteer')
 
 // apimedic api URL
 const hostUrl = 'https://sandbox-healthservice.priaid.ch'
-// google search page host url
+// google search page host url for web scraping
 const googleSearchURL = 'https://www.google.co.in/search?q='
 
+// creating a special axios instance for direct API calls
 const apimedic = axios.create({
   baseURL: hostUrl,
   params: {
@@ -17,6 +18,12 @@ const apimedic = axios.create({
   }
 })
 
+// method to get detailes information on a disease using ID
+/**
+ *
+ * @param {disease ID} id
+ * @param {Auth Token for the api call} token
+ */
 const getDiseaseInfoFromApi = (id, token) => {
   return apimedic(`/issues/${id}/info`, {
     params: {
@@ -39,7 +46,11 @@ const getDiseaseInfoFromApi = (id, token) => {
     .catch(err => console.log(err))
 }
 
-// get all symptoms
+// get all the symptoms
+/**
+ *
+ * @param {Request object} req
+ */
 const getSymptoms = req => {
   const {
     app: { locals }
@@ -68,16 +79,19 @@ const getDiagnosis = req => {
     }
   })
     .then(({ data }) => {
+      // appending short description to each object cotaining disease data
       const promiseArray = []
       data.forEach(disease => {
         const prom = new Promise((resolve, reject) => {
           Disease.findOne({ id: disease.Issue.ID })
             .then(res => {
+              // if available in the DB grab it otherwise make a api call and save in the DB for future use
               if (res) {
                 disease.desc = res.description
                 resolve()
               } else {
                 const { ID: id } = disease.Issue
+                // 3rd party api call
                 getDiseaseInfoFromApi(id, locals.key)
                   .then(res => {
                     disease.desc = res.description
@@ -95,6 +109,11 @@ const getDiagnosis = req => {
     .catch(err => err)
 }
 
+// Attempt to scrape data from the web (failed for now)
+/**
+ *
+ * @param {Disease Name} key
+ */
 const scrapeDiseaseData = key => {
   // todo: implement data scrapping from google search page
   return puppeteer
@@ -118,7 +137,7 @@ const scrapeDiseaseData = key => {
     })
 }
 
-// get disease data from the database and if not present then fetch the data from the api or scrape the web
+// get disease data from the database and if not present then fetch the data from the api and save in DB
 const getDiseaseData = req => {
   const {
     params: { id },

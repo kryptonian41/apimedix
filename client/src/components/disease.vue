@@ -65,11 +65,6 @@ export default {
       descLoading: false
     }
   },
-  methods: {
-    getDiseaseInfo() {
-      axios(`/api/disease/${id}`).then()
-    }
-  },
   created() {
     this.descLoading = true
     const self = this
