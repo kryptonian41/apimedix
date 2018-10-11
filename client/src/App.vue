@@ -42,7 +42,7 @@
       </v-btn>
     </v-toolbar>
     <v-content>
-        <v-slide-y-reverse-transition mode="out-in">
+        <v-slide-y-reverse-transition mode="out-in" appear>
           <router-view/>
         </v-slide-y-reverse-transition>
     </v-content>
