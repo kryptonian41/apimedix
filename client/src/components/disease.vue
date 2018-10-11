@@ -25,27 +25,25 @@
         <template v-if="!descLoading">
           <v-container grid-list-md class="px-0">
             <v-layout row wrap>
-              <v-flex xs6>
-                <v-card class="px-0" color="secondary white--text">
-                  <v-card-title primary-title>
+              <v-flex xs12 md6>
+                <v-card class="px-0">
+                  <v-card-title primary-title class="red darken-2 white--text">
                       <h4 class="headline">Treatment</h4>
                     </v-card-title>
+                    <v-divider light></v-divider>
                     <v-card-text>
-                      <p>
                       {{ diseaseData.treatement }}
-                      </p>
                     </v-card-text>
                 </v-card>
               </v-flex>
-              <v-flex xs6 d-flex>
-                <v-card class="px-0" color="secondary white--text">
-                  <v-card-title primary-title>
+              <v-flex xs12 md6 d-flex>
+                <v-card class="px-0">
+                  <v-card-title primary-title class="red darken-2 white--text">
                     <h4 class="headline">Symptoms</h4>
                   </v-card-title>
+                  <v-divider light></v-divider>
                   <v-card-text>
-                    <p>
-                    {{ diseaseData.symptoms }}
-                    </p>
+                      {{ diseaseData.symptoms }}
                   </v-card-text>
                 </v-card>
               </v-flex>

@@ -30,7 +30,7 @@
       app
       :clipped-left="clipped"
       dark
-      color="error"
+      color="indigo darken-4"
     >
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-btn icon @click.stop="miniVariant = !miniVariant">

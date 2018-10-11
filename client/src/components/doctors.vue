@@ -1,18 +1,18 @@
 <template>
-  <v-container>
+  <v-container grid-list-lg>
     <v-layout row wrap justify-center>
-      <v-flex xs12 lg10>
+      <v-flex xs12 lg6>
         <v-card>
           <v-card-title primary-title class="headline">
             Nearby Health Care Centers
           </v-card-title>
           <div ref="map" id="map"></div>
           <v-card-actions class="pa-3">
-            <v-btn color="success" @click="searchNearbyDocs">Search</v-btn>
+            <v-btn color="success" @click="panToCurrPos" :disabled="!away">Current Location</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
-      <v-flex xs12 lg11 class="mt-3">
+      <v-flex xs12 lg6 class="mt-3">
          <v-expansion-panel
             popout
           >
@@ -24,16 +24,16 @@
               <div slot="header">
                 <h4>{{ item.name }}</h4>
                 <template v-if="item.rating">
-                  <v-flex xs12 d-flex justify-start>
-                    <v-rating :value="item.rating" small color="orange">
-                  </v-rating>
-                  ({{ item.rating }})
+                  <v-flex xs12>
+                    <v-layout row align-center>
+                      <v-rating :value="item.rating" small color="orange" readonly>
+                      </v-rating>
+                      ({{ item.rating }})
+                      <v-spacer></v-spacer>
+                    </v-layout>
+
                   </v-flex>
-
                 </template>
-
-
-                <!-- <p>{{ item.Issue.IcdName }}</p> -->
               </div>
               <v-card>
                 <v-card-text class="grey lighten-3">
@@ -45,7 +45,7 @@
                 </v-card-text>
                 <v-card-actions class="pa-3">
                   <v-spacer></v-spacer>
-                  <v-btn color="success">See on Map</v-btn>
+                  <v-btn color="success" @click="moveToMarker(item.place_id)">See on Map</v-btn>
                 </v-card-actions>
               </v-card>
             </v-expansion-panel-content>
@@ -63,10 +63,46 @@ export default {
       placesService: null,
       currPos: null,
       places: [],
-      markers: []
+      markers: [],
+      reducedMarkers: {},
+      away: false,
+      currentMarker: null
+    }
+  },
+  watch: {
+    markers: function() {
+      var self = this
+      this.markers.forEach(function(item) {
+        self.reducedMarkers[item.id] = item
+      })
     }
   },
   methods: {
+    panToCurrPos() {
+      this.away = false
+      this.currentMarker.setIcon('')
+      this.currentMarker = null
+      this.map.panTo(this.currPos)
+    },
+    moveToMarker(placeID) {
+      this.$vuetify.goTo(0, {
+        duration: 400,
+        offset: 0,
+        easing: 'easeInOutCubic'
+      })
+      this.away = true
+      const id = '' + placeID
+      const marker = this.reducedMarkers[id].marker
+      this.currentMarker = marker
+      marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png')
+      marker.setAnimation(google.maps.Animation.BOUNCE)
+      setTimeout(() => {
+        marker.setAnimation(null)
+      }, 2000)
+      const lat = marker.position.lat()
+      const long = marker.position.lng()
+      this.map.panTo(new google.maps.LatLng(lat, long))
+    },
     createMarker(place) {
       const marker = new google.maps.Marker({
         position: place.geometry.location,
@@ -98,13 +134,12 @@ export default {
                 'website'
               ]
             }
-            self.placesService.getDetails(request, callback)
-            function callback(place, status) {
+            self.placesService.getDetails(request, function(place, status) {
               if (status == google.maps.places.PlacesServiceStatus.OK) {
-                console.log(place)
                 self.places.push(place)
+                self.createMarker(place)
               }
-            }
+            })
           }
         }
       })
@@ -131,7 +166,8 @@ export default {
           })
           const marker = new google.maps.Marker({
             position: pos,
-            map: self.map
+            map: self.map,
+            icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
           })
           self.placesService = new google.maps.places.PlacesService(self.map)
           self.searchNearbyDocs()
