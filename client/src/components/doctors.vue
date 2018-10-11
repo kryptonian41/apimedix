@@ -165,15 +165,13 @@ export default {
     // Getting the current location of the user using the HTML5 gealocation api
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        ({ coords: { longitude, latitude }, coords }) => {
-          const dummyLocation = {
-            lat: 26.92207,
-            long: 75.778885
-          }
-          var pos = new google.maps.LatLng(
-            dummyLocation.lat,
-            dummyLocation.long
-          )
+        ({ coords: { longitude, latitude } }) => {
+          // dummy co-ordinates used just for developement purposes
+          // const dummyLocation = {
+          //   lat: 26.92207,
+          //   long: 75.778885
+          // }
+          var pos = new google.maps.LatLng(latitude, longitude)
           self.currPos = pos
           self.map = new google.maps.Map(this.$refs.map, {
             center: pos,
