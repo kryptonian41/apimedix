@@ -10,10 +10,23 @@ router.get('/symptoms', (req, res) => {
     })
     .catch(err => res.send('err'))
 })
+
 router.post('/diagnosis', (req, res) => {
   apiController.getDiagnosis(req).then(data => {
     res.send(data)
   })
+})
+
+router.get('/test', (req, res) => {
+  res.send('heyy')
+})
+
+router.get('/test/:name', (req, res) => {
+  const {
+    params: { name }
+  } = req
+  apiController.scrapeDiseaseData(name)
+  res.send('heyy')
 })
 
 router.get('/disease/:id', (req, res) => {

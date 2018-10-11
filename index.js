@@ -19,13 +19,15 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use('/api', require('./routes/apimedicapi'))
 
-app.use(express.static('client/dist'))
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'))
-})
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/dist'))
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'))
+  })
+}
 
 app.listen(config.PORT, function() {
-  console.log('Server started')
+  console.log('Server started at ', config.PORT)
   console.info('Getting and setting the auth token')
   // getting the auth token
   const {

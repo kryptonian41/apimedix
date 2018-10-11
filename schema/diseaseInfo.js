@@ -3,12 +3,12 @@ const { Schema } = mongoose
 
 const diseaseSchema = new Schema({
   title: String,
-  symptoms: String,
   id: Number,
-  selfCare: String,
+  symptoms: String,
   medications: String,
-  medicalProcedure: String,
+  treatement: String,
   specialists: String,
+  selfCare: String,
   description: String
 })
 

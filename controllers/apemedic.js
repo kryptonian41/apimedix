@@ -1,13 +1,15 @@
 const axios = require('axios')
-const cheerio = require('cheerio')
 const mongoose = require('mongoose')
 const Disease = mongoose.model('diseases')
+// for web scrapping
+const cheerio = require('cheerio')
+const puppeteer = require('puppeteer')
 
+// apimedic api URL
 const hostUrl = 'https://sandbox-healthservice.priaid.ch'
-// host website for colleecting data on different diseases
-const scrapeHost = 'https://medlineplus.gov'
-const scrapeSearchHost =
-  'https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=medlineplus&v%3Asources=medlineplus-bundle&query='
+// google search page host url
+const googleSearchURL = 'https://www.google.co.in/search?q='
+
 const apimedic = axios.create({
   baseURL: hostUrl,
   params: {
@@ -47,10 +49,30 @@ const getDiagnosis = req => {
     .catch(err => err)
 }
 
-const scrapeDiseaseData = () => {
-  // todo: implement data scrapping
+const scrapeDiseaseData = key => {
+  // todo: implement data scrapping from google search page
+  return puppeteer
+    .launch()
+    .then(function(browser) {
+      return browser.newPage()
+    })
+    .then(function(page) {
+      return page.goto(googleSearchURL + key).then(function() {
+        return page.content()
+      })
+    })
+    .then(function(html) {
+      const $ = cheerio.load(html)
+      console.log(html)
+      const accordians = $('#knowledge-health__hitf')
+      console.log('TCL: containers', accordians)
+    })
+    .catch(function(err) {
+      console.log(err)
+    })
 }
 
+// get disease data from the database and if not present then fetch the data from the api or scrape the web
 const getDiseaseData = req => {
   const {
     params: { id },
@@ -71,8 +93,9 @@ const getDiseaseData = req => {
         const artdata = {
           title: data.Name,
           id,
-          medicalProcedure: data.TreatmentDescription,
-          description: data.Description
+          description: data.Description,
+          treatement: data.TreatmentDescription,
+          symptoms: data.PossibleSymptoms
         }
         const disease = new Disease(artdata)
         await disease.save()
@@ -85,5 +108,6 @@ const getDiseaseData = req => {
 module.exports = {
   getSymptoms,
   getDiagnosis,
-  getDiseaseData
+  getDiseaseData,
+  scrapeDiseaseData
 }

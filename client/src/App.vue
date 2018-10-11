@@ -40,6 +40,9 @@
         <v-toolbar-title v-text="title"></v-toolbar-title>
       </router-link>
       <v-spacer></v-spacer>
+      <v-btn flat icon color="white" to="/">
+        <v-icon>home</v-icon>
+      </v-btn>
     </v-toolbar>
     <v-content>
         <v-slide-y-reverse-transition mode="out-in">

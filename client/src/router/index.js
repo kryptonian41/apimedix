@@ -15,7 +15,7 @@ export default new Router({
       component: Symptom
     },
     {
-      path: '/disease/:data',
+      path: '/disease/:id/:title',
       component: Disease,
       props: true,
       name: 'disease'

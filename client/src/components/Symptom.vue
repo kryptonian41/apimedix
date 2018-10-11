@@ -128,14 +128,14 @@
 
 <script>
 import axios from 'axios'
-import { setTimeout } from 'timers'
+import { symptomStore } from '../main.js'
+
 export default {
   data() {
     return {
       selectedSym: [],
       symptoms: [],
       diagnosing: false,
-      panel: [false, true, true],
       result: [],
       error: false,
       loadingSymptoms: false
@@ -148,6 +148,8 @@ export default {
     },
     diagnose() {
       this.result = []
+      symptomStore.result = []
+      symptomStore.selectedSym = this.selectedSym
       var self = this
       this.diagnosing = true
       axios
@@ -159,6 +161,7 @@ export default {
           if (data.length > 0) {
             self.error = false
             self.result = data
+            symptomStore.result = data
           } else {
             self.error = true
           }
@@ -171,7 +174,7 @@ export default {
       console.log(item)
       this.$router.push({
         name: 'disease',
-        params: { data: { id: item.Issue.ID, title: item.Issue.Name } }
+        params: { id: item.Issue.ID, title: item.Issue.Name }
       })
     }
   },
@@ -180,14 +183,20 @@ export default {
       return this.result.length > 0 ? true : false
     }
   },
-  mounted() {
+  created() {
+    if (!symptomStore.noSymptoms) {
+      this.symptoms = symptomStore.symptoms
+      this.result = symptomStore.result
+      this.selectedSym = symptomStore.selectedSym
+      return
+    }
     setTimeout(() => {
       this.loadingSymptoms = true
       var self = this
-      // todo: show a toast notification until the symptoms are being loaded from the servers
-      axios('/api/symptoms').then(res => {
+      axios('/api/symptoms').then(({ data }) => {
         self.loadingSymptoms = false
-        self.symptoms = res.data
+        symptomStore.set(data)
+        self.symptoms = data
       })
     }, 300)
   }
