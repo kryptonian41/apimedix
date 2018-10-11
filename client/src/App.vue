@@ -2,8 +2,7 @@
   <v-app style="background: transparent;">
     <v-navigation-drawer
       persistent
-      :mini-variant="miniVariant"
-      :clipped="clipped"
+      clipped
       v-model="drawer"
       enable-resize-watcher
       fixed
