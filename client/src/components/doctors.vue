@@ -13,8 +13,10 @@
         </v-card>
       </v-flex>
       <v-flex xs12 lg6 class="mt-3">
-         <v-expansion-panel
+        <v-slide-y-transition>
+          <v-expansion-panel
             popout
+            v-if="hasPlaces"
           >
             <v-expansion-panel-content
               v-for="(item, i) in places"
@@ -50,6 +52,7 @@
               </v-card>
             </v-expansion-panel-content>
           </v-expansion-panel>
+        </v-slide-y-transition>
       </v-flex>
     </v-layout>
   </v-container>
@@ -69,6 +72,11 @@ export default {
       currentMarker: null
     }
   },
+  computed: {
+    hasPlaces: function() {
+      return this.places.length > 0 ? true : false
+    }
+  },
   watch: {
     markers: function() {
       var self = this
@@ -78,10 +86,16 @@ export default {
     }
   },
   methods: {
-    panToCurrPos() {
-      this.away = false
+    resetMarker() {
+      if (!this.currentMarker) {
+        return
+      }
       this.currentMarker.setIcon('')
       this.currentMarker = null
+    },
+    panToCurrPos() {
+      this.away = false
+      this.resetMarker()
       this.map.panTo(this.currPos)
     },
     moveToMarker(placeID) {
@@ -90,6 +104,7 @@ export default {
         offset: 0,
         easing: 'easeInOutCubic'
       })
+      this.resetMarker()
       this.away = true
       const id = '' + placeID
       const marker = this.reducedMarkers[id].marker

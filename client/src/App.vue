@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app style="background: transparent;">
     <v-navigation-drawer
       persistent
       :mini-variant="miniVariant"
@@ -33,9 +33,6 @@
       color="indigo darken-4"
     >
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon v-html="miniVariant ? 'chevron_right' : 'chevron_left'"></v-icon>
-      </v-btn>
       <router-link to="/" tag="div" style="cursor: pointer;">
         <v-toolbar-title v-text="title"></v-toolbar-title>
       </router-link>
@@ -74,3 +71,11 @@ export default {
   name: 'App'
 }
 </script>
+
+<style>
+body {
+  background: url('/static/bg.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+}
+</style>
