@@ -61,6 +61,31 @@
                   </v-card-text>
                 </v-card>
               </v-flex>
+              <v-flex xs12 mt-4>
+                <v-card class="px-0">
+                  <v-card-title primary-title class="red darken-2 white--text">
+                    <h4 class="headline">Doctors you should visit</h4>
+                  </v-card-title>
+                  <v-divider light></v-divider>
+                  <v-card-text>
+                      <v-list>
+                        <v-list-tile
+                          v-for="specialist in specialisation"
+                          :key="specialist"
+                        >
+                          <v-list-tile-action>
+                            <v-icon color="orange lighten-2">star</v-icon>
+                          </v-list-tile-action>
+
+                          <v-list-tile-content>
+                            <v-list-tile-title>{{ specialist.Name }}</v-list-tile-title>
+                          </v-list-tile-content>
+
+                        </v-list-tile>
+                      </v-list>
+                  </v-card-text>
+                </v-card>
+              </v-flex>
             </v-layout>
           </v-container>
         </template>
@@ -72,7 +97,7 @@
 <script>
 import axios from 'axios'
 export default {
-  props: ['id', 'title'],
+  props: ['id', 'title', 'specialisation'],
   data() {
     return {
       diseaseData: {},
@@ -88,7 +113,6 @@ export default {
     this.descLoading = true
     const self = this
     axios(`/api/disease/${this.id}`).then(({ data }) => {
-      console.log(data)
       self.descLoading = false
       self.diseaseData = data
     })

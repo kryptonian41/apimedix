@@ -174,10 +174,13 @@ export default {
     },
     // Get more information about a particular disease
     goToDisease(item) {
-      console.log(item)
       this.$router.push({
         name: 'disease',
-        params: { id: item.Issue.ID, title: item.Issue.Name }
+        params: {
+          id: item.Issue.ID,
+          title: item.Issue.Name,
+          specialisation: item.Specialisation
+        }
       })
     }
   },
