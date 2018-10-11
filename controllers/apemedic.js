@@ -17,6 +17,28 @@ const apimedic = axios.create({
   }
 })
 
+const getDiseaseInfoFromApi = (id, token) => {
+  return apimedic(`/issues/${id}/info`, {
+    params: {
+      token: token,
+      issue_id: id
+    }
+  })
+    .then(async ({ data }) => {
+      const artdata = {
+        title: data.Name,
+        id,
+        description: data.Description,
+        treatement: data.TreatmentDescription,
+        symptoms: data.PossibleSymptoms
+      }
+      const disease = new Disease(artdata)
+      await disease.save()
+      return artdata
+    })
+    .catch(err => console.log(err))
+}
+
 // get all symptoms
 const getSymptoms = req => {
   const {
@@ -27,7 +49,7 @@ const getSymptoms = req => {
       token: locals.key
     }
   })
-    .then(res => res.data)
+    .then(({ data }) => data)
     .catch(err => err)
 }
 
@@ -45,7 +67,31 @@ const getDiagnosis = req => {
       year_of_birth: 1997
     }
   })
-    .then(res => res.data)
+    .then(({ data }) => {
+      const promiseArray = []
+      data.forEach(disease => {
+        const prom = new Promise((resolve, reject) => {
+          Disease.findOne({ id: disease.Issue.ID })
+            .then(res => {
+              if (res) {
+                disease.desc = res.description
+                resolve()
+              } else {
+                const { ID: id } = disease.Issue
+                getDiseaseInfoFromApi(id, locals.key)
+                  .then(res => {
+                    disease.desc = res.description
+                    resolve()
+                  })
+                  .catch(err => reject(err))
+              }
+            })
+            .catch(err => reject(err))
+        })
+        promiseArray.push(prom)
+      })
+      return Promise.all(promiseArray).then(() => data)
+    })
     .catch(err => err)
 }
 
@@ -83,25 +129,7 @@ const getDiseaseData = req => {
     if (res) {
       return res
     }
-    return apimedic(`/issues/${id}/info`, {
-      params: {
-        token: locals.key,
-        issue_id: id
-      }
-    })
-      .then(async ({ data }) => {
-        const artdata = {
-          title: data.Name,
-          id,
-          description: data.Description,
-          treatement: data.TreatmentDescription,
-          symptoms: data.PossibleSymptoms
-        }
-        const disease = new Disease(artdata)
-        await disease.save()
-        return artdata
-      })
-      .catch(err => console.log(err))
+    return getDiseaseInfoFromApi(id, locals.key)
   })
 }
 
