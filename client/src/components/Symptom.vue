@@ -206,7 +206,7 @@ export default {
         symptomStore.set(data)
         self.symptoms = data
       })
-    }, 300)
+    }, 500)
   }
 }
 </script>
