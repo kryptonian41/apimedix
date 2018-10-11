@@ -25,7 +25,7 @@
         <template v-if="!descLoading">
           <v-container grid-list-md class="px-0">
             <v-layout row wrap>
-              <v-flex xs12 md6>
+              <v-flex xs12 md6 d-flex>
                 <v-card class="px-0">
                   <v-card-title primary-title class="red darken-2 white--text">
                       <h4 class="headline">Treatment</h4>
@@ -43,7 +43,21 @@
                   </v-card-title>
                   <v-divider light></v-divider>
                   <v-card-text>
-                      {{ diseaseData.symptoms }}
+                      <v-list>
+                        <v-list-tile
+                          v-for="symptom in symptoms"
+                          :key="symptom"
+                        >
+                          <v-list-tile-action>
+                            <v-icon color="orange lighten-2">star</v-icon>
+                          </v-list-tile-action>
+
+                          <v-list-tile-content>
+                            <v-list-tile-title>{{ symptom }}</v-list-tile-title>
+                          </v-list-tile-content>
+
+                        </v-list-tile>
+                      </v-list>
                   </v-card-text>
                 </v-card>
               </v-flex>
@@ -63,6 +77,11 @@ export default {
     return {
       diseaseData: {},
       descLoading: false
+    }
+  },
+  computed: {
+    symptoms() {
+      return this.diseaseData.symptoms.split(',')
     }
   },
   created() {
