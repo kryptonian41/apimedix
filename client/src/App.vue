@@ -77,5 +77,6 @@ body {
   background: url('/static/bg.jpg');
   background-size: cover;
   background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 </style>
