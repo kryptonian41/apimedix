@@ -13,10 +13,15 @@
         </v-card>
       </v-flex>
       <v-flex xs12 lg6 class="mt-3">
-        <v-slide-y-transition>
+        <v-slide-y-transition mode="out-in">
+          <template v-if="showErrorMsg">
+            <v-alert type="error" :value="true">
+              Sorry, could not find any medical centers near you.
+            </v-alert>
+          </template>
           <v-expansion-panel
             popout
-            v-if="hasPlaces"
+            v-if="hasPlaces && !showErrorMsg"
           >
             <v-expansion-panel-content
               v-for="(item, i) in places"
@@ -69,7 +74,8 @@ export default {
       markers: [],
       reducedMarkers: {},
       away: false,
-      currentMarker: null
+      currentMarker: null,
+      showErrorMsg: false
     }
   },
   computed: {
@@ -133,6 +139,9 @@ export default {
       }
       const self = this
       this.placesService.nearbySearch(request, function(res, status) {
+        if (res.length == 0) {
+          self.showErrorMsg = true
+        }
         if (status == google.maps.places.PlacesServiceStatus.OK) {
           for (var i = 0; i < res.length; i++) {
             var placeID = res[i].place_id
@@ -171,6 +180,10 @@ export default {
           //   lat: 26.92207,
           //   long: 75.778885
           // }
+          // var pos = new google.maps.LatLng(
+          //   dummyLocation.lat,
+          //   dummyLocation.long
+          // )
           var pos = new google.maps.LatLng(latitude, longitude)
           self.currPos = pos
           self.map = new google.maps.Map(this.$refs.map, {
